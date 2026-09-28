@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "reservas")
@@ -20,9 +18,11 @@ public class Reservas {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fecha_de_reserva;
+    @Column(name = "fecha_de_reserva")
+    private LocalDateTime fechaDeReserva;
+
     private Boolean estado;
 
-    @OneToOne(mappedBy = "viajes", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "reserva", fetch = FetchType.LAZY)
     private Viajes viajes;
 }
