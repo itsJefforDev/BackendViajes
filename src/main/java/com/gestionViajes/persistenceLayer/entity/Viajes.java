@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "viajes")
@@ -26,7 +27,7 @@ public class Viajes {
     private Date fechas_disponibles;
     private String descripcion;
 
-    @OneToOne(mappedBy = "reservas", fetch = FetchType.LAZY)
-    private Reservas reservas;
+    @OneToMany(mappedBy = "viajes", fetch = FetchType.LAZY)
+    private List<Reservas> reservas;
 
 }

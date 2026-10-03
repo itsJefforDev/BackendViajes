@@ -19,7 +19,7 @@ public class Cliente {
     private String telefono;
     private String direccion;
 
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "clientes", fetch = FetchType.LAZY)
     private List<Reservas> reservas;
 
 }

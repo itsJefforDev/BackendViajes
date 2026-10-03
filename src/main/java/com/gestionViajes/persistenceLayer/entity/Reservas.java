@@ -22,6 +22,11 @@ public class Reservas {
 
     private Boolean estado;
 
-    @OneToOne(mappedBy = "reserva", fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente")
+    private Cliente clientes;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_viaje")
     private Viajes viajes;
 }
