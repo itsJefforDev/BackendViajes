@@ -20,7 +20,6 @@ public class Viajes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String destino;
     private Date duracion;
 
     private double precio;
@@ -29,5 +28,10 @@ public class Viajes {
 
     @OneToMany(mappedBy = "viajes", fetch = FetchType.LAZY)
     private List<Reservas> reservas;
+
+    // Cambiamos el String plano por la relación ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "destino_id")
+    private Destino destino;
 
 }

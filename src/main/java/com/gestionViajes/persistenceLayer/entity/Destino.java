@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "destinos")
 @Data
@@ -30,4 +32,7 @@ public class Destino {
 
     @Column(name = "recomendaciones", length = 1000)
     private String recomendaciones;
+
+    @OneToMany(mappedBy = "destino", fetch = FetchType.LAZY)
+    private List<Viajes> viajes;
 }
