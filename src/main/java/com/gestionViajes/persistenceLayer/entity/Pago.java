@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+
 
 @Entity
 @Table(name = "pagos")
@@ -20,7 +20,7 @@ public class Pago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String metodoDePago;
-    private double monto;
+    private BigDecimal monto;
     private LocalDateTime fecha;
     private String estado;
     private String numeroTransaccion;
