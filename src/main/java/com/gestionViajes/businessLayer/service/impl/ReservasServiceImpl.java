@@ -1,9 +1,10 @@
 package com.gestionViajes.businessLayer.service.impl;
 
-import com.gestionViajes.persistenceLayer.entity.Reservas;
-import com.gestionViajes.persistenceLayer.repository.ReservasRepository;
 import com.gestionViajes.businessLayer.dto.ReservasDTO;
 import com.gestionViajes.businessLayer.service.ReservasService;
+import com.gestionViajes.persistenceLayer.entity.Reservas;
+import com.gestionViajes.persistenceLayer.mapper.ReservasMapper;
+import com.gestionViajes.persistenceLayer.repository.ReservasRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,13 @@ import java.util.stream.Collectors;
 public class ReservasServiceImpl implements ReservasService {
 
     private final ReservasRepository reservasRepository;
+    private final ReservasMapper reservasMapper;
 
     @Override
     @Transactional(readOnly = true)
     public List<ReservasDTO> listarTodas() {
         return reservasRepository.findAll().stream()
-                .map(this::mapearADto)
+                .map(reservasMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -31,19 +33,15 @@ public class ReservasServiceImpl implements ReservasService {
     public ReservasDTO obtenerPorId(Long id) {
         Reservas reserva = reservasRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Reserva no encontrada con ID: " + id));
-        return mapearADto(reserva);
+        return reservasMapper.toDto(reserva);
     }
 
     @Override
     @Transactional
     public ReservasDTO crear(ReservasDTO dto) {
-        Reservas reserva = new Reservas();
-        reserva.setFechaDeReserva(dto.getFechaDeReserva());
-        reserva.setEstado(dto.getEstado());
-        // Si necesitas asociar el viaje usando dto.getViajeId(), lo enlazarías aquí buscando el viaje por su ID.
-
+        Reservas reserva = reservasMapper.toEntity(dto);
         Reservas reservaGuardada = reservasRepository.save(reserva);
-        return mapearADto(reservaGuardada);
+        return reservasMapper.toDto(reservaGuardada);
     }
 
     @Override
@@ -54,10 +52,9 @@ public class ReservasServiceImpl implements ReservasService {
 
         reserva.setFechaDeReserva(dto.getFechaDeReserva());
         reserva.setEstado(dto.getEstado());
-        // Actualiza la relación o campos adicionales si llegan en el DTO
 
         Reservas reservaActualizada = reservasRepository.save(reserva);
-        return mapearADto(reservaActualizada);
+        return reservasMapper.toDto(reservaActualizada);
     }
 
     @Override
@@ -67,20 +64,5 @@ public class ReservasServiceImpl implements ReservasService {
             throw new EntityNotFoundException("Reserva no encontrada con ID: " + id);
         }
         reservasRepository.deleteById(id);
-    }
-
-    // Método auxiliar para transformar Entidad -> DTO
-    private ReservasDTO mapearADto(Reservas reserva) {
-        ReservasDTO dto = new ReservasDTO();
-        dto.setId(reserva.getId());
-        dto.setFechaDeReserva(reserva.getFechaDeReserva());
-        dto.setEstado(reserva.getEstado());
-
-        // Opcional: si la relación 'viajes' no es nula, mapeas su ID al DTO
-        if (reserva.getViajes() != null) {
-            dto.setViajeId(reserva.getViajes().getId());
-        }
-
-        return dto;
     }
 }

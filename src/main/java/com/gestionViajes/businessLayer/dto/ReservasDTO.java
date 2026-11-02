@@ -8,5 +8,6 @@ public class ReservasDTO {
     private Long id;
     private LocalDateTime fechaDeReserva;
     private Boolean estado;
-    private Long viajeId; // Útil al crear/actualizar si necesitas asociarlo al viaje
+    private Long viajeId;
+    private Long clienteId;
 }
